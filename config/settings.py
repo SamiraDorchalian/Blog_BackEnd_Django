@@ -42,9 +42,14 @@ INSTALLED_APPS = [
     'ckeditor',
     'ckeditor_uploader',
     'corsheaders',
+    'graphene_django',
 
     'blog',
 ]
+
+GRAPHENE = {
+    'SCHEMA': 'config.schema.schema', 
+}
 
 CORS_ALLOW_ALL_ORIGINS = True
 
