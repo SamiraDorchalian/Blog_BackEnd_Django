@@ -1,6 +1,9 @@
 asgiref==3.11.0
 attrs==25.4.0
 Django==4.2.27
+django-ckeditor==6.7.3
+django-cors-headers==4.9.0
+django-js-asset==2.2.0
 djangorestframework==3.16.1
 drf-spectacular==0.29.0
 inflection==0.5.1
@@ -14,3 +17,4 @@ sqlparse==0.5.4
 typing_extensions==4.15.0
 tzdata==2025.2
 uritemplate==4.2.0
+whitenoise==6.11.0
