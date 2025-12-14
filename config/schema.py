@@ -59,17 +59,19 @@ class CreateComment(graphene.Mutation):
         try:
             post = Post.objects.get(slug=post_slug)
         except Post.DoesNotExist:
-            raise Exception("پست پیدا نشد")
+            raise graphene.GraphQLError("پست پیدا نشد")
+
         comment = Comment.objects.create(
             name=name,
             email=email,
             text=text,
             post=post,
         )
+
         return CreateComment(ok=True, comment=comment)
 
 class Mutation(graphene.ObjectType):
-    create_comment = CreateComment.Field()
+    create_comment = CreateComment.Field(name="createComment")
 
 # Schema
 schema = graphene.Schema(query=Query, mutation=Mutation)
