@@ -5,7 +5,7 @@ from .models import Author, Post, Comment
 
 @admin.register(Author)
 class AuthorAdmin(admin.ModelAdmin):
-    list_display = ['name', 'avatar', 'field', 'description', 'slug']
+    list_display = ['name', 'avatar', 'field',  'slug']
     fields = ['name', 'avatar', 'field', 'description', 'slug']
     search_fields = ['name', 'field']
     list_filter = ['field']
