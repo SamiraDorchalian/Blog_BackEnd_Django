@@ -2,7 +2,7 @@ import graphene
 from graphene_django import DjangoObjectType
 from blog.models import Post, Author, Comment
 
-# GraphQL for models
+# GraphQL types for models
 class AuthorType(DjangoObjectType):
     class Meta:
         model = Author
@@ -18,12 +18,11 @@ class CommentType(DjangoObjectType):
         model = Comment
         fields = "__all__"
 
-#Query
+# Query class
 class Query(graphene.ObjectType):
     all_posts = graphene.List(PostType)
     all_authors = graphene.List(AuthorType)
     all_comments = graphene.List(CommentType)
-
     post_by_slug = graphene.Field(PostType, slug=graphene.String())
     posts_by_author = graphene.List(PostType, author_name=graphene.String())
 
@@ -45,5 +44,32 @@ class Query(graphene.ObjectType):
     def resolve_posts_by_author(root, info, author_name):
         return Post.objects.filter(author__name__icontains=author_name)
 
+# Mutation class
+class CreateComment(graphene.Mutation):
+    class Arguments:
+        name = graphene.String(required=True)
+        email = graphene.String(required=True)
+        text = graphene.String(required=True)
+        post_slug = graphene.String(required=True)
 
-schema = graphene.Schema(query=Query)
+    ok = graphene.Boolean()
+    comment = graphene.Field(CommentType)
+
+    def mutate(self, info, name, email, text, post_slug):
+        try:
+            post = Post.objects.get(slug=post_slug)
+        except Post.DoesNotExist:
+            raise Exception("پست پیدا نشد")
+        comment = Comment.objects.create(
+            name=name,
+            email=email,
+            text=text,
+            post=post,
+        )
+        return CreateComment(ok=True, comment=comment)
+
+class Mutation(graphene.ObjectType):
+    create_comment = CreateComment.Field()
+
+# Schema
+schema = graphene.Schema(query=Query, mutation=Mutation)
