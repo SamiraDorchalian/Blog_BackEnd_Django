@@ -24,7 +24,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-1=#ofgj7fo@q(7jgo=a&1zv=axb4z2wb@08_3q&p$*0&ikzp+9'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv("DEBUG", "False") == "True"
+# DEBUG = os.getenv("DEBUG", "False") == "True"
+DEBUG = True
 ALLOWED_HOSTS = ["*"]
 
 # Application definition
@@ -43,8 +44,13 @@ INSTALLED_APPS = [
     'ckeditor_uploader',
     'corsheaders',
     'graphene_django',
+    "debug_toolbar",
 
     'blog',
+]
+
+INTERNAL_IPS = [
+    "127.0.0.1",
 ]
 
 GRAPHENE = {
@@ -54,6 +60,7 @@ GRAPHENE = {
 CORS_ALLOW_ALL_ORIGINS = True
 
 MIDDLEWARE = [
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'corsheaders.middleware.CorsMiddleware',
